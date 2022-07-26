@@ -1,0 +1,15 @@
+C:\Users\hieronim\Documents\GitHub\MyBookshelf\MyBookshelf\MyBookshelf\bin\Debug\net6.0\MyBookshelf.exe
+C:\Users\hieronim\Documents\GitHub\MyBookshelf\MyBookshelf\MyBookshelf\bin\Debug\net6.0\MyBookshelf.deps.json
+C:\Users\hieronim\Documents\GitHub\MyBookshelf\MyBookshelf\MyBookshelf\bin\Debug\net6.0\MyBookshelf.runtimeconfig.json
+C:\Users\hieronim\Documents\GitHub\MyBookshelf\MyBookshelf\MyBookshelf\bin\Debug\net6.0\MyBookshelf.dll
+C:\Users\hieronim\Documents\GitHub\MyBookshelf\MyBookshelf\MyBookshelf\bin\Debug\net6.0\MyBookshelf.pdb
+C:\Users\hieronim\Documents\GitHub\MyBookshelf\MyBookshelf\MyBookshelf\obj\Debug\net6.0\MyBookshelf.csproj.AssemblyReference.cache
+C:\Users\hieronim\Documents\GitHub\MyBookshelf\MyBookshelf\MyBookshelf\obj\Debug\net6.0\MyBookshelf.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\hieronim\Documents\GitHub\MyBookshelf\MyBookshelf\MyBookshelf\obj\Debug\net6.0\MyBookshelf.AssemblyInfoInputs.cache
+C:\Users\hieronim\Documents\GitHub\MyBookshelf\MyBookshelf\MyBookshelf\obj\Debug\net6.0\MyBookshelf.AssemblyInfo.cs
+C:\Users\hieronim\Documents\GitHub\MyBookshelf\MyBookshelf\MyBookshelf\obj\Debug\net6.0\MyBookshelf.csproj.CoreCompileInputs.cache
+C:\Users\hieronim\Documents\GitHub\MyBookshelf\MyBookshelf\MyBookshelf\obj\Debug\net6.0\MyBookshelf.dll
+C:\Users\hieronim\Documents\GitHub\MyBookshelf\MyBookshelf\MyBookshelf\obj\Debug\net6.0\refint\MyBookshelf.dll
+C:\Users\hieronim\Documents\GitHub\MyBookshelf\MyBookshelf\MyBookshelf\obj\Debug\net6.0\MyBookshelf.pdb
+C:\Users\hieronim\Documents\GitHub\MyBookshelf\MyBookshelf\MyBookshelf\obj\Debug\net6.0\MyBookshelf.genruntimeconfig.cache
+C:\Users\hieronim\Documents\GitHub\MyBookshelf\MyBookshelf\MyBookshelf\obj\Debug\net6.0\ref\MyBookshelf.dll

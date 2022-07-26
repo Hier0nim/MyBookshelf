@@ -8,12 +8,12 @@ namespace MyBookshelf
 {
     internal class MenuActionService
     {
-        private List<MenuAction> menuAction;
+        private List<MenuAction> menuActions;
 
         public void AddNewAction(int id, string name, string menuCategory)
         {
             MenuAction action = new MenuAction() { Id = id, Name = name, MenuCategory = menuCategory };
-            menuAction.Add(action);
+            menuActions.Add(action);
         }
 
         public List<MenuAction> GetMenuActionByMenuCategory(string menuCategory)
