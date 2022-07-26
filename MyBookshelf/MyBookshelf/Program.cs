@@ -14,12 +14,13 @@
             {
                 Console.WriteLine($"{mainMenu[i].Id}. {mainMenu[i].Name}");
             }
-
-            var operation = Console.ReadKey(); 
-            switch(operation.KeyChar)
+            
+            var operation = Console.ReadKey();
+            BookService bookService = new BookService();
+            switch (operation.KeyChar)
             {
                 case '1':
-
+                    var keyInfo = bookService.BookManagementView(actionService);
                     break;
                 case '2':
                     break;

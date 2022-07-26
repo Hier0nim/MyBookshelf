@@ -19,6 +19,7 @@ namespace MyBookshelf
         {
             var BookManagementMenu = actionService.GetMenuActionByMenuCategory("BookManagement");
 
+            Console.Clear();
             Console.WriteLine("What would you like to do?");
             for (int i = 0; i < BookManagementMenu.Count; i++)
             {
