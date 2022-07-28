@@ -23,6 +23,7 @@
                         bookService.ConditionOfBookshelfDecisionTree(actionService);
                         break;
                     case '3':
+                        bookService.ChangeIsReadStatus();
                         break;
                     case '4':
                         isAppRunning = false;

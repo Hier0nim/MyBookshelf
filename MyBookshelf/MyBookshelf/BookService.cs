@@ -58,6 +58,29 @@
             }
         }
 
+        public void ChangeIsReadStatus()
+        {
+            var id = GetBookISBN();
+            if(CheckIfBookExists(id))
+            {
+                Book book = GetExistingBook(id);
+
+                Console.Clear();
+                ShowBook(book);
+                Console.WriteLine($"Are tou sure you want to change this book \"Has Been Read\" status to {!book.IsRead} ? y/n");
+                if (IfSure() == true)
+                {
+                    book.IsRead = !book.IsRead;
+                }
+                else
+                {
+                    Console.WriteLine("Status has NOT been changed.");
+                    System.Threading.Thread.Sleep(500);
+                }
+            }   
+
+        }
+
         public void ConditionOfBookshelfDecisionTree(MenuActionService actionService)
         {
             bool isMenuRunning = true;
