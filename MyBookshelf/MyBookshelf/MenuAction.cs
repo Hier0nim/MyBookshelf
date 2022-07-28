@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyBookshelf
 {
-    internal class MenuAction
+    public class MenuAction
     {
         public int Id { get; set; }
         public string Name { get; set; }

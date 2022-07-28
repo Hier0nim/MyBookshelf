@@ -4,35 +4,39 @@
     {
         static void Main(string[] args)
         {
+            
+
             MenuActionService actionService = new MenuActionService();
+            BookService bookService = new BookService();
             actionService = Initialize(actionService);
 
             Console.WriteLine("Welcome to MyBookshelf app!");
-            Console.WriteLine("What do you want to do?");
-            var mainMenu = actionService.GetMenuActionByMenuCategory("MainMenu");
-            for(int i = 0; i < mainMenu.Count; i++)
+            bool isAppRunning = true;
+            while (isAppRunning)
             {
-                Console.WriteLine($"{mainMenu[i].Id}. {mainMenu[i].Name}");
+                var operation = bookService.MenuView(actionService, "MainMenu");
+
+                switch (operation.KeyChar)
+                {
+                    case '1':
+                        //var keyInfo = bookService.MenuView(actionService, "BookManagement");
+                        bookService.BookManagement(actionService);
+                        break;
+                    case '2':
+                        var keyInfo = bookService.MenuView(actionService, "BookshelfCondition");
+                        break;
+                    case '3':
+                        break;
+                    case '4':
+                        isAppRunning = false;
+                        break;
+                    default:
+                        Console.WriteLine("Action you entered does not exist");
+                        break;
+                }
+
+                
             }
-            
-            var operation = Console.ReadKey();
-            BookService bookService = new BookService();
-            switch (operation.KeyChar)
-            {
-                case '1':
-                    var keyInfo = bookService.BookManagementView(actionService);
-                    break;
-                case '2':
-                    break;
-                case '3':
-                    break;
-                default:
-                    Console.WriteLine("Action does not exists");
-                    break;
-            }
-
-
-
         }
 
         private static MenuActionService Initialize(MenuActionService actionService)
@@ -40,11 +44,25 @@
             actionService.AddNewAction(1, "Book Management", "MainMenu");
             actionService.AddNewAction(2, "Condition of bookshelf", "MainMenu");
             actionService.AddNewAction(3, "Book has been read", "MainMenu");
+            actionService.AddNewAction(4, "Exit", "MainMenu");
 
 
             actionService.AddNewAction(1, "Add book", "BookManagement");
             actionService.AddNewAction(2, "Delete book", "BookManagement");
             actionService.AddNewAction(3, "Modify book", "BookManagement");
+            actionService.AddNewAction(4, "Go back", "BookManagement");
+
+
+            actionService.AddNewAction(1, "By ISBN", "BookshelfCondition");
+            actionService.AddNewAction(2, "By date", "BookshelfCondition");
+            actionService.AddNewAction(3, "By categories", "BookshelfCondition");
+            actionService.AddNewAction(4, "Only selected category", "BookshelfCondition");
+            actionService.AddNewAction(4, "Go back", "BookshelfCondition");
+
+            actionService.AddNewAction(1, "Edit title", "ModifyBook");
+            actionService.AddNewAction(2, "Edit Category", "ModifyBook");
+            actionService.AddNewAction(3, "Edit Description", "ModifyBook");
+            actionService.AddNewAction(4, "Go back", "ModifyBook");
             return actionService;
         }
     }

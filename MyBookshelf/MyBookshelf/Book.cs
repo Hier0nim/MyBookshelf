@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace MyBookshelf
 {
-    internal class Book
+    public class Book
     {
+        public int ISBN { get; set; }
+        public string Category { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public DateTime Date { get; set; }
+        public bool IsRead { get; set; }
+
     }
 }
