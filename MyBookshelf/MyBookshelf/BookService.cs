@@ -70,11 +70,14 @@
                     case '1':   
                         AllBooksByISPN();
                         break;
-                    case '2':        
+                    case '2':
+                        AllBooksByDate();
                         break;
                     case '3':
+                        AllBooksByCategories();
                         break;
                     case '4':
+                        AllBooksInCategories();
                         break;
                     case '5':
                         isMenuRunning = false;
@@ -86,6 +89,17 @@
             }
         }
 
+        public void ShowBook(Book book)
+        {
+            Console.WriteLine("--------------------------------------");
+            Console.WriteLine($"Book ISBN: {book.ISBN}");
+            Console.WriteLine($"Book title: {book.Title}");
+            Console.WriteLine($"Book categories: {string.Join(",", book.Categories)}");
+            Console.WriteLine($"Book Description: {book.Description}");
+            Console.WriteLine($"Has been read: {book.IsRead}");
+            Console.WriteLine($"When added: {book.Date}");
+        }
+
         public void AllBooksByISPN()
         {
             Console.Clear();
@@ -93,15 +107,75 @@
             List<Book> SortedBooks = Books.OrderBy(o => o.ISBN).ToList();
             foreach(Book book in SortedBooks)
             {
-                Console.WriteLine("--------------------------------------");
-                Console.WriteLine($"Book ISBN: {book.ISBN}");
-                Console.WriteLine($"Book title: {book.Title}");
-                Console.WriteLine($"Book categories: {string.Join(",", book.Categories)}");
-                Console.WriteLine($"Book Description: {book.Description}");
-                Console.WriteLine($"Has been read: {book.IsRead}");
-                Console.WriteLine($"When added: {book.Date}");
-                Console.WriteLine("--------------------------------------");
+                ShowBook(book);
             }
+            Console.WriteLine("\r\nPress any key to go back.");
+            Console.ReadLine(); 
+        }
+
+        public void AllBooksByDate()
+        {
+            Console.Clear();
+            Console.WriteLine("All Books Sorted By Date.");
+            List<Book> SortedBooks = Books.OrderBy(o => o.Date).ToList();
+            foreach (Book book in SortedBooks)
+            {
+                ShowBook(book);
+            }
+            Console.WriteLine("\r\nPress any key to go back.");
+            Console.ReadLine();
+        }
+        public void AllBooksByCategories()
+        {
+            Console.Clear();
+            Console.WriteLine("All Books by their categories.");
+            List<string> allCategories = new List<string>();
+            foreach (Book book in Books)
+            {
+                allCategories.AddRange(book.Categories);
+            }
+            List<string> noDupesCategories = allCategories.Distinct().ToList();
+
+            foreach (string category in noDupesCategories)
+            {
+                Console.WriteLine($"\n\rBOOKS IN {category} CATEGORY:");
+                foreach(Book book in Books)
+                {
+                    if(book.Categories.Contains(category))
+                    {
+                        ShowBook(book);
+                    }
+                }
+            }
+
+            Console.WriteLine("\r\nPress any key to go back.");
+            Console.ReadLine();
+        }
+
+        public void AllBooksInCategories()
+        {
+            Console.Clear();
+            Console.WriteLine("Enter book categories separeted by comma you want to find.");
+            string categoryString = Console.ReadLine();
+            string[] categories = categoryString.Split(',');
+            List<string> listOfCategories = new List<string>();
+            foreach (var category in categories)
+            {
+                listOfCategories.Add(category);
+            }
+
+            foreach (string category in listOfCategories)
+            {
+                Console.WriteLine($"\n\rBOOKS IN {category} CATEGORY:");
+                foreach (Book book in Books)
+                {
+                    if (book.Categories.Contains(category))
+                    {
+                        ShowBook(book);
+                    }
+                }
+            }
+
             Console.WriteLine("Press any key to go back.");
             Console.ReadLine();
         }
