@@ -4,8 +4,6 @@
     {
         static void Main(string[] args)
         {
-            
-
             MenuActionService actionService = new MenuActionService();
             BookService bookService = new BookService();
             actionService = Initialize(actionService);
@@ -20,10 +18,10 @@
                 {
                     case '1':
                         //var keyInfo = bookService.MenuView(actionService, "BookManagement");
-                        bookService.BookManagement(actionService);
+                        bookService.BookManagementDecisionTree(actionService);
                         break;
                     case '2':
-                        var keyInfo = bookService.MenuView(actionService, "BookshelfCondition");
+                        // var keyInfo = bookService.MenuView(actionService, "BookshelfCondition");
                         break;
                     case '3':
                         break;
@@ -34,8 +32,6 @@
                         Console.WriteLine("Action you entered does not exist");
                         break;
                 }
-
-                
             }
         }
 
@@ -66,7 +62,7 @@
             return actionService;
         }
     }
-   
+
 }
 
 // Greeting

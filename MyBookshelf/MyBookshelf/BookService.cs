@@ -1,52 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MyBookshelf
+﻿namespace MyBookshelf
 {
     public class BookService
     {
-        public List<Book> Books { get; set; }     
-        
+        public List<Book> Books { get; set; }
+
         public BookService()
         {
             Books = new List<Book>();
-        }
-
-        public void BookManagement(MenuActionService actionService)
-        {
-            bool isMenuRunning = true;
-            while (isMenuRunning)
-            {
-                var keyInfo =  MenuView(actionService, "BookManagement");
-
-                switch (keyInfo.KeyChar)
-                {
-                    case '1':
-                        AddNewBook();
-                        break;
-                    case '2':
-                        var id = RemoveBookView();
-                        RemoveBook(id); 
-                        break;
-                    case '3':
-                        id = ModifyBookView();
-                        Book bookToModify = ModifyBookViewStep2(id);
-                        if (bookToModify.ISBN != -1)
-                        {
-                            ModifyBook(actionService, bookToModify);
-                        }
-                        break;
-                    case '4':
-                        isMenuRunning = false;
-                        break;
-                    default:
-                        Console.WriteLine("Action you entered does not exist");
-                        break;
-                }
-            }
         }
 
         public ConsoleKeyInfo MenuView(MenuActionService actionService, string selectedMenu)
@@ -64,13 +24,49 @@ namespace MyBookshelf
             return operations;
         }
 
+        public void BookManagementDecisionTree(MenuActionService actionService)
+        {
+            bool isMenuRunning = true;
+            while (isMenuRunning)
+            {
+                var keyInfo = MenuView(actionService, "BookManagement");
+
+                switch (keyInfo.KeyChar)
+                {
+                    case '1':
+                        AddNewBook();
+                        break;
+                    case '2':
+                        var id = GetBookISBN();
+                        RemoveBook(id);
+                        break;
+                    case '3':
+                        id = GetBookISBN();
+                        if(CheckIfBookExists(id))
+                        {
+                            Book bookToModify = GetExistingBook(id);
+                            ModifyBook(actionService, bookToModify);
+                        }  
+                        break;
+                    case '4':
+                        isMenuRunning = false;
+                        break;
+                    default:
+                        Console.WriteLine("Action you entered does not exist");
+                        break;
+                }
+            }
+        }
+
+
+
         private void AddNewBook()
         {
             Book book = new Book();
 
             Console.Clear();
-            Console.WriteLine("Enter book category.");
-            var category = Console.ReadLine();
+            Console.WriteLine("Enter book categories separeted by comma.");
+            var categoryString = Console.ReadLine();
 
             Console.WriteLine("Enter book title.");
             var title = Console.ReadLine();
@@ -78,7 +74,7 @@ namespace MyBookshelf
             Console.WriteLine("Enter the ISBN of the book without hyphens(-)");
             var ISBN = Console.ReadLine();
             int id;
-            while(int.TryParse(ISBN, out id) == false)
+            while (int.TryParse(ISBN, out id) == false)
             {
                 Console.WriteLine("Uncorrect ISBN format!");
                 Console.WriteLine("Enter the ISBN of the book without hyphens(-)");
@@ -94,7 +90,7 @@ namespace MyBookshelf
             {
                 Console.WriteLine("Have you read this book? y/n");
                 var key = Console.ReadKey();
-                
+
                 switch (key.KeyChar)
                 {
                     case 'y':
@@ -110,8 +106,12 @@ namespace MyBookshelf
                         break;
                 }
             }
-     
-            book.Category = category;
+
+            string[] categories = categoryString.Split(',');
+            foreach(var category in categories)
+            {
+                book.Categories.Add(category);
+            }
             book.ISBN = id;
             book.Title = title;
             book.Description = description;
@@ -119,47 +119,41 @@ namespace MyBookshelf
 
             Console.Clear();
             Console.WriteLine("Are you sure you want to add this book? y/n");
-            Console.WriteLine($"Category: {category}");
+            Console.WriteLine($"Categories: {categoryString}");
             Console.WriteLine($"ISBN: {ISBN}");
             Console.WriteLine($"Title: {title}");
             Console.WriteLine($"Description: {description}");
             Console.WriteLine($"isAlreadyRead: {isRead}");
 
-            correct_Action = false;
-            while (correct_Action == false)
+            if(IfSure())
             {
-                var sureToAdd = Console.ReadKey();
-                switch (sureToAdd.KeyChar)
-                {
-                    case 'y':
-                        Books.Add(book);
-                        correct_Action = true;
-                        break;
-                    case 'n':
-                        correct_Action = true;
-                        break;
-                    default:
-                        Console.WriteLine("\n\rAction you entered does not exist.");
-                        break;
-                }
-            }      
+                Books.Add(book);
+                Console.WriteLine($"Book has not been added");
+                System.Threading.Thread.Sleep(500);
+            }
+            else
+            {
+                Console.WriteLine($"Book has not been added");
+                System.Threading.Thread.Sleep(500);
+
+            }
         }
 
-        public int RemoveBookView()
+        public int GetBookISBN()
         {
             Console.Clear();
-            Console.WriteLine("Enter the ISBN of the book you want to delete without hyphens(-).");
+            Console.WriteLine("Enter the ISBN of the book without hyphens(-).");
             var ISBN = Console.ReadLine();
             int id;
-         
+
             while (int.TryParse(ISBN, out id) == false)
             {
                 Console.WriteLine("Uncorrect ISBN format!");
-                Console.WriteLine("Enter the ISBN of the book you want to delete without hyphens(-).");
+                Console.WriteLine("Enter the ISBN of the book without hyphens(-).");
                 ISBN = Console.ReadLine();
             }
 
-          return id;
+            return id;
         }
 
         public void RemoveBook(int id)
@@ -170,62 +164,32 @@ namespace MyBookshelf
             {
                 if (book.ISBN == id)
                 {
-                    isFound = true; 
+                    isFound = true;
                     Console.Clear();
                     Console.WriteLine("Are you sure you want to delete this book? y/n");
-                    Console.WriteLine($"Category: {book.Category}");
+                    string categories = string.Join(",", book.Categories);
+                    Console.WriteLine($"Category: {categories}");
                     Console.WriteLine($"ISBN: {book.ISBN}");
                     Console.WriteLine($"Title: {book.Title}");
                     Console.WriteLine($"Description: {book.Description}");
                     Console.WriteLine($"isAlreadyRead: {book.IsRead}");
-
-                    var correct_Action = false;
-                    while (correct_Action == false)
+                    
+                    if (IfSure())
                     {
-                        var sureToDelete = Console.ReadKey();
-                        switch (sureToDelete.KeyChar)
-                        {
-                            case 'y':
-                                bookToRemove = book;
-                                correct_Action = true;
-                                break;
-                            case 'n':
-                                correct_Action = true;
-                                break;
-                            default:
-                                Console.WriteLine("\n\rAction you entered does not exist.");
-                                break;
-                        }
+                        bookToRemove = book;
                     }
-                    break;
                 }
             }
-            if(isFound == false)  
+            if (isFound == false)
                 Console.WriteLine($"Book with id: {id} has not been found.");
-            else    
+            else
                 Console.WriteLine($"Book with id: {id} has been removed.");
             Books.Remove(bookToRemove);
             System.Threading.Thread.Sleep(500);
         }
 
-        public int ModifyBookView()
-        {
-            Console.Clear();
-            Console.WriteLine("Enter the ISBN of the book you want to modify without hyphens(-).");
-            var ISBN = Console.ReadLine();
-            int id;
 
-            while (int.TryParse(ISBN, out id) == false)
-            {
-                Console.WriteLine("Uncorrect ISBN format!");
-                Console.WriteLine("Enter the ISBN of the book you want to delete without hyphens(-).");
-                ISBN = Console.ReadLine();
-            }
-
-            return id;
-        }
-
-        public Book ModifyBookViewStep2(int id)
+        public Book GetExistingBook(int id)
         {
             bool isFound = false;
             Book bookToModify = new Book();
@@ -242,9 +206,28 @@ namespace MyBookshelf
             {
                 Console.WriteLine($"Book with id: {id} has not been found.");
                 System.Threading.Thread.Sleep(500);
-                
+
             }
             return bookToModify;
+        }
+
+        public bool CheckIfBookExists(int id)
+        {
+            bool isFound = false;
+            foreach (var book in Books)
+            {
+                if (book.ISBN == id)
+                {
+                    isFound = true;
+                }
+            }
+            if (isFound == false)
+            {
+                Console.WriteLine($"Book with id: {id} has not been found.");
+                System.Threading.Thread.Sleep(500);
+
+            }
+            return isFound;
         }
 
         public void ModifyBook(MenuActionService actionService, Book book)
@@ -285,9 +268,9 @@ namespace MyBookshelf
             Console.WriteLine($"Are tou sure tou want to change:");
             Console.WriteLine(book.Title);
             Console.WriteLine("for:");
-            Console.WriteLine(newTitle );
+            Console.WriteLine(newTitle);
             Console.WriteLine("? y/n");
-            if(SureToModify() == true)
+            if (IfSure() == true)
             {
                 book.Title = newTitle;
             }
@@ -301,25 +284,33 @@ namespace MyBookshelf
         public void ModifyBookCategory(Book book)
         {
             Console.Clear();
-            Console.WriteLine($"Previous category: {book.Category}");
-            Console.WriteLine("Enter yourn new category.");
-            string newCategory = Console.ReadLine();
+            string categories = string.Join(",", book.Categories);
+            Console.WriteLine($"Previous categories: {categories}");
+            Console.WriteLine("Enter new categories separeted with comma.");
+            string newCategories= Console.ReadLine();
             Console.Clear();
             Console.WriteLine($"Are tou sure tou want to change:");
-            Console.WriteLine(book.Category);
+            Console.WriteLine(categories);
             Console.WriteLine("for:");
-            Console.WriteLine(newCategory);
+            Console.WriteLine(newCategories);
             Console.WriteLine("? y/n");
-            if (SureToModify() == true)
+            if (IfSure() == true)
             {
-                book.Category = newCategory;
+                string[] newCategoriesArray = newCategories.Split(',');
+                book.Categories.Clear();
+                foreach (var category in newCategoriesArray)
+                {
+                    book.Categories.Add(category);
+                }
+                Console.WriteLine("Category has been changed.");
             }
             else
             {
                 Console.WriteLine("Category has NOT been changed.");
-                System.Threading.Thread.Sleep(500);
             }
+            System.Threading.Thread.Sleep(500);
         }
+
         public void ModifyBookDescription(Book book)
         {
             Console.Clear();
@@ -332,7 +323,7 @@ namespace MyBookshelf
             Console.WriteLine("for:");
             Console.WriteLine(newDescription);
             Console.WriteLine("? y/n");
-            if (SureToModify() == true)
+            if (IfSure() == true)
             {
                 book.Description = newDescription;
             }
@@ -343,21 +334,21 @@ namespace MyBookshelf
             }
         }
 
-        public bool SureToModify()
+        public bool IfSure()
         {
-            bool sureToModify = false;
+            bool isSure = false;
             var correct_Action = false;
             while (correct_Action == false)
             {
-                var sureToDelete = Console.ReadKey();
-                switch (sureToDelete.KeyChar)
+                var isSureKey = Console.ReadKey();
+                switch (isSureKey.KeyChar)
                 {
                     case 'y':
-                        sureToModify = true;
+                        isSure = true;
                         correct_Action = true;
                         break;
                     case 'n':
-                        sureToModify = false;
+                        isSure = false;
                         correct_Action = true;
                         break;
                     default:
@@ -365,8 +356,7 @@ namespace MyBookshelf
                         break;
                 }
             }
-            return sureToModify;
+            return isSure;
         }
     }
 }
- 
