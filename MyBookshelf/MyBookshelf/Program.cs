@@ -17,11 +17,10 @@
                 switch (operation.KeyChar)
                 {
                     case '1':
-                        //var keyInfo = bookService.MenuView(actionService, "BookManagement");
                         bookService.BookManagementDecisionTree(actionService);
                         break;
                     case '2':
-                        // var keyInfo = bookService.MenuView(actionService, "BookshelfCondition");
+                        bookService.ConditionOfBookshelfDecisionTree(actionService);
                         break;
                     case '3':
                         break;
@@ -48,12 +47,11 @@
             actionService.AddNewAction(3, "Modify book", "BookManagement");
             actionService.AddNewAction(4, "Go back", "BookManagement");
 
-
             actionService.AddNewAction(1, "By ISBN", "BookshelfCondition");
             actionService.AddNewAction(2, "By date", "BookshelfCondition");
             actionService.AddNewAction(3, "By categories", "BookshelfCondition");
             actionService.AddNewAction(4, "Only selected category", "BookshelfCondition");
-            actionService.AddNewAction(4, "Go back", "BookshelfCondition");
+            actionService.AddNewAction(5, "Go back", "BookshelfCondition");
 
             actionService.AddNewAction(1, "Edit title", "ModifyBook");
             actionService.AddNewAction(2, "Edit Category", "ModifyBook");

@@ -58,7 +58,53 @@
             }
         }
 
+        public void ConditionOfBookshelfDecisionTree(MenuActionService actionService)
+        {
+            bool isMenuRunning = true;
+            while (isMenuRunning)
+            {
+                var keyInfo = MenuView(actionService, "BookshelfCondition");
 
+                switch (keyInfo.KeyChar)
+                {
+                    case '1':   
+                        AllBooksByISPN();
+                        break;
+                    case '2':        
+                        break;
+                    case '3':
+                        break;
+                    case '4':
+                        break;
+                    case '5':
+                        isMenuRunning = false;
+                        break;
+                    default:
+                        Console.WriteLine("Action you entered does not exist");
+                        break;
+                }
+            }
+        }
+
+        public void AllBooksByISPN()
+        {
+            Console.Clear();
+            Console.WriteLine("All Books Sorted By ISPN Number");
+            List<Book> SortedBooks = Books.OrderBy(o => o.ISBN).ToList();
+            foreach(Book book in SortedBooks)
+            {
+                Console.WriteLine("--------------------------------------");
+                Console.WriteLine($"Book ISBN: {book.ISBN}");
+                Console.WriteLine($"Book title: {book.Title}");
+                Console.WriteLine($"Book categories: {string.Join(",", book.Categories)}");
+                Console.WriteLine($"Book Description: {book.Description}");
+                Console.WriteLine($"Has been read: {book.IsRead}");
+                Console.WriteLine($"When added: {book.Date}");
+                Console.WriteLine("--------------------------------------");
+            }
+            Console.WriteLine("Press any key to go back.");
+            Console.ReadLine();
+        }
 
         private void AddNewBook()
         {
@@ -116,6 +162,7 @@
             book.Title = title;
             book.Description = description;
             book.IsRead = isRead;
+            book.Date = DateTime.Now;
 
             Console.Clear();
             Console.WriteLine("Are you sure you want to add this book? y/n");
